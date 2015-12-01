@@ -1,0 +1,107 @@
+**********************************************************************
+Arithmetic Word Problem Solver (Version 1)
+**********************************************************************
+
+This code runs the arithemetic problem solver used in the following 
+publication, 
+
+Subhro Roy and Dan Roth "Solving General Arithemetic Word Problems" EMNLP 2015   
+
+You will need to have maven installed in your system. To download the 
+dependencies, run
+
+    mvn dependency:copy-dependencies
+	      
+Next compile using : 
+
+    
+    mvn compile     
+
+To run on AI2 dataset : 
+
+    sh run.sh AI2 
+
+This runs the Relevance classifier, LCA classifier and the inference
+module. The results are logged in log/AI2Rel.out, log/AI2Pair.out,
+and log/AI2Tune.out respectively.
+
+To run on IL dataset : 
+
+    sh run.sh IL 
+
+This runs the Relevance classifier, LCA classifier and the inference
+module. The results are logged in log/ILRel.out, log/ILPair.out,
+and log/ILTune.out respectively.
+
+To run on CC dataset : 
+
+    sh run.sh CC 
+
+This runs the LCA classifier and the inference module. The results are
+logged in log/CCPair.out and log/CCTune.out respectively.
+
+**********************************************************************
+ How to run on some other dataset ?
+**********************************************************************
+
+To run our solver on your dataset, you have to generate the questions and
+fold information in our format. Have a look in the folders data/ai2, 
+data/illinois, data/commoncore. Each folder has one data file "questions.json"
+and fold files named "fold<i>.txt", where i = 0,1, .., <numFolds-1>.
+
+The json file has an array of problems, each problem having a format 
+as follows :
+ 
+// Index of the problem
+"iIndex":0,	
+
+// Question of text			
+"sQuestion":"Joan found .. ?",
+
+// Final answer of the problem
+"lSolutions":[43.0],
+
+// Final equation generating the solution
+"lEquations":["X=(70.0-27.0)"]}
+
+// Alignment of the number in equation to text, here 70.0 is found at 
+// character offset 11, and 27.0 at character offset 84. Order is defined
+// by the order of the numbers in the equation above   
+"lAlignments":[11,84], 
+
+Finally each fold file is a list of indices of problems belonging to the
+fold, one index in each line. 
+
+Once you have these files, you can replace the files in "illinois" folder,
+since this is the most general pipeline, and run "sh run.sh IL" 
+
+If you have addition-subtraction problems, you can also replace files in 
+"ai2" folder, and run "sh run.sh AI2". 
+
+If you have non-irrelevant quantity problems, you can also replace files in 
+"commoncore" folder, and run "sh run.sh CC".
+
+We also require strict formatting of the equation. Since we want only
+arithmetic expressions, the format is
+"X=<math_expression_with_no_variables>".  Therefore "2=3*X-4" is not
+allowed, but "X=((2+4)/3)" is okay. We also require strict bracketing
+of the expressions. We want "X=((2*7)-9)", and not "X=2*7-9". We 
+currently do not support numbers mentioned in words.
+
+
+**********************************************************************
+ Why are the numbers on AI2, IL and CC datasets not exactly the same ?
+**********************************************************************
+
+This version uses Stanford Dependency Parser instead of easy-first
+dependency parser, which was used for the experiments for the EMNLP
+paper. If you want to replicate the results from the EMNLP paper,
+please download the "version 2" code.
+
+
+**********************************************************************
+Other issues
+**********************************************************************
+For issues, questions or suggestions, contact sroy9@illinois.edu
+
+********************************************************************** 

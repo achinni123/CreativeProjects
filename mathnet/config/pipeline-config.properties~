@@ -1,0 +1,7 @@
+usePos	true
+useChunker	true
+useLemmatizer	false
+useNer	true
+useNerExt	false
+useStanfordParse false
+forceCacheUpdate false
